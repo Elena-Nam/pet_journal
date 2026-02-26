@@ -1,21 +1,63 @@
+const Pet = require('../models/Pet')
+const {StatusCodes} = require('http-status-codes')
+const {BadRequestError, NotFoundError} = require('../errors')
+
+
 const getAllPets = async (req,res) => {
-  res.send('get all pets')
+  const pets = await Pet.find({createdBy: req.user.userId}).sort('createdAt')
+  res.status(StatusCodes.OK).json({pets, count: pets.length})
 }
 
 const getPet = async (req,res) => {
-  res.send('get a pet')
+  const {user: {userId}, params:{petId}} = req
+  const pet = await Pet.findOne({
+    _id: petId,
+    createdBy: userId
+  })
+  if(!pet){
+    throw new NotFoundError(`No pet with the id: ${petId}`)
+  }
+  res.status(StatusCodes.OK).json(pet)
 }
 
 const createPet = async (req,res) => {
-  res.json(req.user)
+  req.body.createdBy = req.user.userId
+  const pet = await Pet.create(req.body)
+  res.status(StatusCodes.CREATED).json({pet})
 }
 
 const updatePet = async (req,res) => {
-  res.send('get all pets')
+//  console.log(req.params)
+// console.log(req.user)
+// console.log(req.body)
+// console.log(req.query)
+  const { user: {userId}, params:{petId}} = req
+   
+  const pet = await Pet.findOneAndUpdate({
+    _id: petId,
+    createdBy: userId
+  }, 
+  req.body,
+  {new: true, runValidators:true} 
+  )
+
+  if(!pet){
+    throw new NotFoundError(`No pet with the id: ${petId}`)
+  }
+  res.status(StatusCodes.OK).json(pet)
 }
 
 const deletePet = async (req,res) => {
-  res.send('get all pets')
+  const { user: {userId}, params:{petId}} = req
+  const pet = await Pet.findOneAndDelete({
+    _id: petId,
+    createdBy: userId
+  })
+
+  if(!pet){
+    throw new NotFoundError(`No pet with the id: ${petId}`)
+  }
+  res.status(StatusCodes.OK).json({pet})
 }
 
 

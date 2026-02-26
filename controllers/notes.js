@@ -1,13 +1,23 @@
+const Note = require('../models/Note')
+const {StatusCodes, NOT_ACCEPTABLE} = require('http-status-codes')
+const {BadRequestError, NotFoundError} = require('../errors')
+
+
 const getPetNotes = async (req,res) => {
-  res.send('get all pet notes')
-}
+  const notes = await Note.find({pet: req.params.petId}).sort('createdAt')
+    res.status(StatusCodes.OK).json({notes, count: notes.length})
+  }
+
 
 const getNote = async (req,res) => {
   res.send('get a note')
 }
 
 const createNote = async (req,res) => {
-  res.send('create a note')
+  req.body.createdForPet = req.params.petId
+  const note = await Note.create(req.body)
+  res.status(StatusCodes.CREATED).json({note})
+
 }
 
 const updateNote = async (req,res) => {
