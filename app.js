@@ -1,5 +1,8 @@
-console.log("Hello Node!");
 require('dotenv').config();
+const helmet = require('helmet')
+const cors = require('cors')
+const xss = require('xss-clean')
+const rateLimit = require('express-rate-limit')
 
 const express = require('express');
 const app = express();
@@ -7,7 +10,7 @@ const app = express();
 // connect db
 const connectDB = require('./db/connect')
 
-//
+// authentication
 const authMiddleware = require('./middleware/authentication')
 
 // routers
@@ -18,22 +21,26 @@ const petsRouter = require('./routes/pets')
 const notFoundMiddleware = require('./middleware/not-found')
 const errorHandlerMiddleware = require('./middleware/error-handler')
 
+app.use(rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+}))
+
 app.use(express.json());
 
-//extra packages
+//extra packages for security
+app.use(helmet())
+app.use(cors())
+app.use(xss())
 
 //routes
 app.use('/api/v1/auth', authRouter)
 app.use('/api/v1/pets', authMiddleware, petsRouter)
 
-
-
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
 
-
 const port = process.env.PORT || 3000;
-
 
 const start = async () => {
   try {
