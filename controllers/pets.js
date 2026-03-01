@@ -27,12 +27,7 @@ const createPet = async (req,res) => {
 }
 
 const updatePet = async (req,res) => {
-//  console.log(req.params)
-// console.log(req.user)
-// console.log(req.body)
-// console.log(req.query)
   const { user: {userId}, params:{petId}} = req
-   
   const pet = await Pet.findOneAndUpdate({
     _id: petId,
     createdBy: userId
@@ -40,7 +35,6 @@ const updatePet = async (req,res) => {
   req.body,
   {new: true, runValidators:true} 
   )
-
   if(!pet){
     throw new NotFoundError(`No pet with the id: ${petId}`)
   }
@@ -53,7 +47,6 @@ const deletePet = async (req,res) => {
     _id: petId,
     createdBy: userId
   })
-
   if(!pet){
     throw new NotFoundError(`No pet with the id: ${petId}`)
   }

@@ -14,17 +14,22 @@ const NoteSchema = new mongoose.Schema({
   }, 
   content: {
     type: String,
-    required: [true, 'Please provide note content']
+    required: [true, 'Please provide the content']
   },
   date: {
     type: Date,
     required: [true, 'Please provide a date']
   },
-  createdForPet: {
+  pet: {
     type: mongoose.Types.ObjectId,
     ref: "Pet",
     required: [true, "Please provide a pet"]
   },
+  createdBy: {
+    type: mongoose.Types.ObjectId,
+    ref: "User",
+    required: [true, "Please provide a user"]
+    },
 },{ timestamps: true})
 
 
