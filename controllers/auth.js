@@ -32,4 +32,10 @@ const login = async (req,res) => {
     .json({user:{name: user.name}, token })
 }
 
-module.exports = {register, login}
+const logout = (req, res) => {
+  res.status(200).json({ message: "You signed out" })
+}
+
+
+
+module.exports = {register, login, logout}

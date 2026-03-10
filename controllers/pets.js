@@ -33,7 +33,7 @@ const updatePet = async (req,res) => {
     createdBy: userId
   }, 
   req.body,
-  {new: true, runValidators:true} 
+  {returnDocument: 'after', runValidators:true} 
   )
   if(!pet){
     throw new NotFoundError(`No pet with the id: ${petId}`)
