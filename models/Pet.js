@@ -25,6 +25,10 @@ const PetSchema = new mongoose.Schema({
     ref: "User",
     required: [true, "Please provide a user"]
   },
+   image: {
+    type: String,
+    default: null
+  }
 },{ timestamps: true})
 
 
