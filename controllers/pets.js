@@ -22,12 +22,19 @@ const getPet = async (req,res) => {
 
 const createPet = async (req,res) => {
   req.body.createdBy = req.user.userId
-  const pet = await Pet.create(req.body)
+  const pet = await Pet.create({
+    ...req.body, 
+    image: req.file ? `/uploads/${req.file.filename}` : null
+  })
   res.status(StatusCodes.CREATED).json({pet})
 }
 
 const updatePet = async (req,res) => {
   const { user: {userId}, params:{petId}} = req
+  if (req.file) {
+    req.body.image = `/uploads/${req.file.filename}`;
+  }
+
   const pet = await Pet.findOneAndUpdate({
     _id: petId,
     createdBy: userId

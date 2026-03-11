@@ -47,7 +47,7 @@ Pet Journal solves this problem by providing a structured digital system where u
 This relational structure ensures scalable and maintainable data management using MongoDB and Mongoose.
 
 ## Technology Stack
-**Frontend:** React, React Router, Axios, CSS  
+**Frontend:** React, React Router,  CSS  
 **Backend:** Node.js, Express.js, RESTful API  
 **Database:** MongoDB, Mongoose ODM  
 **Authentication:** JSON Web Tokens (JWT)  
