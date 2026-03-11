@@ -47,7 +47,7 @@ app.use('/uploads', express.static(path.join(__dirname, '../uploads'), {
 // security
 app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }))
 app.use(cors({
-  origin: 'http://localhost:5173', // React frontend URL
+  origin: 'https://pet-journal-react.onrender.com',// React frontend URL
   credentials: true, // if sending cookies or Authorization headers
 }));
 
